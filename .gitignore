@@ -351,3 +351,93 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# VS Files
+ipch
+*.sdf
+*.opensdf
+*.sln
+*.trx
+*/TestResults
+*.vcxproj.filters
+*.vcxproj.user
+*.vcxproj
+*.idc
+BuildLog.htm
+mt.dep
+*.dll
+*.res
+*.manifest
+*.pdb
+*.idb
+*.pch
+dlldata.c
+*.vspscc
+*.obj
+*.tlb
+*_i.c
+*_p.c
+_*.idl
+_*.h
+*_i.h
+*/Release*
+*/release*
+*/Debug*
+*/debug*
+*.plg
+*.opt
+*.user
+*.ncb
+*.suo
+*.aps
+*.ilk
+.DS_Store
+.*.swp
+#*#
+.#*
+*~
+*.rej
+*.pyo
+*.pyc
+*.a
+*.so
+*.so.[0-9]*
+.libs
+*.al
+*.la
+*.lo
+*.o
