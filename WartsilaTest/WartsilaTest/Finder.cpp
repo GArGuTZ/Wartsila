@@ -302,7 +302,7 @@ bool Finder::check_Bresenham(int _x, int _y, unsigned int _radius, unsigned int 
 			int currentX2 = _x + y;
 			int currentY1 = _y + y;
 			int currentY2 = _y - y;
-			for (int j = _x - x + 1; j < currentX1; ++j)
+			for (int j = _x - x; j <= currentX1; ++j)
 			{
 				if (!image_[currentY1][j] || !image_[currentY2][j])
 				{
@@ -311,7 +311,7 @@ bool Finder::check_Bresenham(int _x, int _y, unsigned int _radius, unsigned int 
 			}
 			currentY1 = _y + x;
 			currentY2 = _y - x;
-			for (int j = _x - y + 1; j < currentX2; ++j)
+			for (int j = _x - y; j <= currentX2; ++j)
 			{
 				if (!image_[currentY1][j] || !image_[currentY2][j])
 				{
@@ -371,6 +371,14 @@ bool Finder::find_round(unsigned int _err)
 		return 0;
 	}
 
+	int radius = (diameter - 1) / 2;
+	// Symmetrical edge must different
+	if (top_.first.second - left_.first.second < radius - 1 || right_.first.second - top_.first.second < radius - 1 || bottom_.first.second - left_.second.second < radius - 1 || right_.second.second - bottom_.second.second < radius - 1 || bottom_.first.first - left_.second.first < radius - 1 || left_.first.first - top_.first.first < radius - 1 || bottom_.second.first - right_.second.first < radius - 1 || right_.first.first - top_.second.first < radius - 1)
+	{
+		std::cout << "Edges is too close" << std::endl;
+		return 0;
+	}
+
 	// Check one of the axis
 	int axis = (left_.first.first + left_.second.first) / 2;
 	for (int j = left_.first.second + 1; j < right_.first.second; ++j)
@@ -392,7 +400,7 @@ bool Finder::find_round(unsigned int _err)
 	if (diameter & 1)
 	{
 		std::cout << "Diameter is odd" << std::endl;
-		if (check_Bresenham(centerX, centerY, diameter / 2))
+		if (check_Bresenham(centerX, centerY, radius))
 		{
 			std::cout << "Center in " << centerX << ',' << centerY << " and diameter " << diameter << std::endl;
 			return 1;
@@ -479,7 +487,7 @@ bool Finder::find_round(unsigned int _err)
 			return 0;
 		}
 
-		if (check_Bresenham(centerX, centerY, (diameter - 1) / 2))
+		if (check_Bresenham(centerX, centerY, radius))
 		{
 			std::cout << "Center in " << centerX << ',' << centerY << " and diameter " << diameter << std::endl;
 			return 1;
