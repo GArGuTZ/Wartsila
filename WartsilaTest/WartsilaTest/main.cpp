@@ -5,7 +5,7 @@
 void main()
 {
 	Finder firstFinder;
-	char* pathToEmpty = "Round01.txt";
+	char* pathToEmpty = "Square01.txt";
 	FILE* fileToRead = fopen(pathToEmpty, "rb");
 	//emptyLRead.Deserialize(fileToRead);
 	std::cout << firstFinder.find(fileToRead) << std::endl;
