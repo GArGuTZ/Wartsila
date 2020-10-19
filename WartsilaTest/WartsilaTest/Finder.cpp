@@ -296,36 +296,35 @@ bool Finder::check_Bresenham(int _x, int _y, unsigned int _radius, unsigned int 
 		{
 			--y;
 			decision = decision + 4 * (x - y) + 10;
+		}
 
-			// Check inner of the round using symmetry
-			int currentX1 = _x + x;
-			int currentX2 = _x + y;
-			int currentY1 = _y + y;
-			int currentY2 = _y - y;
-			for (int j = _x - x; j <= currentX1; ++j)
+		// Check 4 columns in the inner of the round using symmetry
+		int currentX1 = _x + x;
+		int currentX2 = _x - x;
+		int currentY1 = _y + y;
+		int currentY2 = _y + x;
+		for (int i = _y - y; i <= currentY1; ++i)
+		{
+			if (!image_[i][currentX1] || !image_[i][currentX2])
 			{
-				if (!image_[currentY1][j] || !image_[currentY2][j])
-				{
-					++currentErr;
-				}
+				++currentErr;
 			}
-			currentY1 = _y + x;
-			currentY2 = _y - x;
-			for (int j = _x - y; j <= currentX2; ++j)
+		}
+		currentX1 = _x + y;
+		currentX2 = _x - y;
+		for (int i = _y - x; i <= currentY2; ++i)
+		{
+			if (!image_[i][currentX1] || !image_[i][currentX2])
 			{
-				if (!image_[currentY1][j] || !image_[currentY2][j])
-				{
-					++currentErr;
-				}
-			}
-
-			if (currentErr > _err)
-			{
-				std::cout << "More noise than expected" << std::endl;
-				return 0;
+				++currentErr;
 			}
 		}
 
+		if (currentErr > _err)
+		{
+			std::cout << "More noise than expected" << std::endl;
+			return 0;
+		}
 		//std::cout << "New x = " << x << ", New y = " << y << ", Decision = " << decision << std::endl;
 		//std::cout << "Octant 1 : (" << _x + x << ", " << _y + y << ')' << std::endl;
 		//std::cout << "Octant 2 : (" << _x + y << ", " << _y + x << ')' << std::endl;
