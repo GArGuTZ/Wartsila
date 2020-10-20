@@ -30,7 +30,7 @@ bool Finder::find(FILE* _file, unsigned int _err)
 	}
 
 	// Read file
-	std::cout << "Reading file " << _file << std::endl;
+	//std::cout << "Reading file " << _file << std::endl;
 	int dataLength = width_ * width_ + 2 * (width_ - 1);
 	char* readedString(new char[dataLength + 1]);
 	fread(readedString, 1, dataLength, _file);
@@ -52,36 +52,38 @@ bool Finder::find(FILE* _file, unsigned int _err)
 
 	delete[] readedString;
 
-	std::cout << "Begin search" << std::endl;
+	//std::cout << "Begin search" << std::endl;
 
 	if (area_ == 0)
 	{
-		std::cout << "Image is empty" << std::endl;
+		std::cout << "Image is empty\n";
 		return 0;
 	}
 
 	edgesFound_ = find_edges();
 	if (!edgesFound_)
 	{
-		std::cout << "Edges not found or image is bad" << std::endl;
+		//std::cout << "Edges not found or image is bad" << std::endl;
+		std::cout << "Unknown figure\n";
 		return 0;
 	}
 	else
 	{
-		std::cout << "All edges is found" << std::endl;
+		//std::cout << "All edges is found" << std::endl;
 	}
 
 	if (find_square(_err))
 	{
-		std::cout << "Found square" << std::endl;
+		//std::cout << "Found square" << std::endl;
 		return 1;
 	}
 	if (find_round(_err))
 	{
-		std::cout << "Found round" << std::endl;
+		//std::cout << "Found round" << std::endl;
 		return 1;
 	}
 
+	std::cout << "Unknown figure\n";
 	return 0;
 }
 
@@ -167,7 +169,7 @@ bool Finder::find_edges()
 		if (edgeTop && topFound)
 		{
 			edgeTop = 0;
-			std::cout << "Top edge is (" << top_.first.first << ',' << top_.first.second << "), (" << top_.second.first << ',' << top_.second.second << ')' << std::endl;
+			//std::cout << "Top edge is (" << top_.first.first << ',' << top_.first.second << "), (" << top_.second.first << ',' << top_.second.second << ')' << std::endl;
 		}
 		else if (edgeTop && !topFound)
 		{
@@ -176,7 +178,7 @@ bool Finder::find_edges()
 		if (edgeBottom && bottomFound)
 		{
 			edgeBottom = 0;
-			std::cout << "Bottom edge is (" << bottom_.first.first << ',' << bottom_.first.second << "), (" << bottom_.second.first << ',' << bottom_.second.second << ')' << std::endl;
+			//std::cout << "Bottom edge is (" << bottom_.first.first << ',' << bottom_.first.second << "), (" << bottom_.second.first << ',' << bottom_.second.second << ')' << std::endl;
 		}
 		else if (edgeBottom && !bottomFound)
 		{
@@ -185,7 +187,7 @@ bool Finder::find_edges()
 		if (edgeLeft && leftFound)
 		{
 			edgeLeft = 0;
-			std::cout << "Left edge is (" << left_.first.first << ',' << left_.first.second << "), (" << left_.second.first << ',' << left_.second.second << ')' << std::endl;
+			//std::cout << "Left edge is (" << left_.first.first << ',' << left_.first.second << "), (" << left_.second.first << ',' << left_.second.second << ')' << std::endl;
 		}
 		else if (edgeLeft && !leftFound)
 		{
@@ -194,7 +196,7 @@ bool Finder::find_edges()
 		if (edgeRight && rightFound)
 		{
 			edgeRight = 0;
-			std::cout << "Right edge is (" << right_.first.first << ',' << right_.first.second << "), (" << right_.second.first << ',' << right_.second.second << ')' << std::endl;
+			//std::cout << "Right edge is (" << right_.first.first << ',' << right_.first.second << "), (" << right_.second.first << ',' << right_.second.second << ')' << std::endl;
 		}
 		else if (edgeRight && !rightFound)
 		{
@@ -209,10 +211,11 @@ bool Finder::find_edges()
 
 	if (!topFound) // Case when all cells == 0
 	{
-		std::cout << "Image is empty" << std::endl;
+		//std::cout << "Image is empty\n";
 		return 0;
 	}
 
+	//std::cout << "Unknown figure\n";
 	return 0;
 }
 
@@ -229,12 +232,14 @@ bool Finder::find_square(unsigned int _err)
 
 	if ((top_.second.second - top_.first.second + 1) < minLength_ || (bottom_.second.second - bottom_.first.second + 1) < minLength_ || (left_.second.first - left_.first.first + 1) < minLength_ || (right_.second.first - right_.first.first + 1) < minLength_)
 	{
-		std::cout << "Edge length is shorter than minimum" << std::endl;
+		//std::cout << "Edge length is shorter than minimum" << std::endl;
+		//std::cout << "Unknown figure\n";
 		return 0;
 	}
 	if ((top_.second.second - top_.first.second + 1) > maxLength_ || (bottom_.second.second - bottom_.first.second + 1) > maxLength_ || (left_.second.first - left_.first.first + 1) > maxLength_ || (right_.second.first - right_.first.first + 1) > maxLength_)
 	{
-		std::cout << "Edge length is longer than maximum" << std::endl;
+		//std::cout << "Edge length is longer than maximum" << std::endl;
+		//std::cout << "Unknown figure\n";
 		return 0;
 	}
 
@@ -242,7 +247,7 @@ bool Finder::find_square(unsigned int _err)
 	if ((top_.first == left_.first) && (top_.second == right_.first) && (bottom_.first == left_.second) && (bottom_.second == right_.second))
 	{
 		outerFound = 1;
-		std::cout << "Outer is a square" << std::endl;
+		//std::cout << "Outer is a square" << std::endl;
 	}
 
 	if (outerFound)
@@ -258,19 +263,21 @@ bool Finder::find_square(unsigned int _err)
 
 				if (currentError > _err)
 				{
-					std::cout << "More noise than expected" << std::endl;
+					//std::cout << "More noise than expected\n";
 					return 0;
 				}
 			}
 		}
 
-		std::cout << "Square is filled inside" << std::endl;
-		std::cout << "Square edge length is " << top_.second.second - top_.first.second + 1 << std::endl;
-		std::cout << "Square top left point is (" << top_.first.first << ',' << top_.first.second << ')' << std::endl;
+		//std::cout << "Square is filled inside" << std::endl;
+		//std::cout << "Square edge length is " << top_.second.second - top_.first.second + 1 << std::endl;
+		//std::cout << "Square top left point is (" << top_.first.first << ',' << top_.first.second << ')' << std::endl;
+		std::cout << "Square, edge length = " << top_.second.second - top_.first.second + 1 << ", (" << top_.first.first << ',' << top_.first.second << ")\n";
 		return 1;
 	}
 
-	std::cout << "Outer is not found" << std::endl;
+	//std::cout << "Outer is not found" << std::endl;
+	//std::cout << "Unknown figure\n";
 	return 0;
 }
 
@@ -322,7 +329,7 @@ bool Finder::check_Bresenham(int _x, int _y, unsigned int _radius, unsigned int 
 
 		if (currentErr > _err)
 		{
-			std::cout << "More noise than expected" << std::endl;
+			//std::cout << "More noise than expected\n";
 			return 0;
 		}
 		//std::cout << "New x = " << x << ", New y = " << y << ", Decision = " << decision << std::endl;
@@ -330,7 +337,7 @@ bool Finder::check_Bresenham(int _x, int _y, unsigned int _radius, unsigned int 
 		//std::cout << "Octant 2 : (" << _x + y << ", " << _y + x << ')' << std::endl;
 	}
 
-	std::cout << "Round is filled" << std::endl;
+	//std::cout << "Round is filled" << std::endl;
 	return 1;
 }
 
@@ -349,24 +356,27 @@ bool Finder::find_round(unsigned int _err)
 	if ((top_.first.second == bottom_.first.second) && (top_.second.second == bottom_.second.second) && (left_.first.first == right_.first.first) && (left_.second.first == right_.second.first))
 	{
 		symmetryFound = 1;
-		std::cout << "Outer is a symmetrical" << std::endl;
+		//std::cout << "Outer is a symmetrical" << std::endl;
 	}
 	else
 	{
-		std::cout << "Outer is not symmetrical" << std::endl;
+		//std::cout << "Outer is not symmetrical" << std::endl;
+		//std::cout << "Unknown figure\n";
 		return 0;
 	}
 
 	int diameter = bottom_.first.first - top_.first.first + 1;
-	std::cout << "Round diameter is " << diameter << std::endl;
+	//std::cout << "Round diameter is " << diameter << std::endl;
 	if (diameter < minLength_)
 	{
-		std::cout << "Diameter is shorter than minimum" << std::endl;
+		//std::cout << "Diameter is shorter than minimum" << std::endl;
+		//std::cout << "Unknown figure\n";
 		return 0;
 	}
 	if (diameter > maxLength_)
 	{
-		std::cout << "Diameter is longer than maximum" << std::endl;
+		//std::cout << "Diameter is longer than maximum" << std::endl;
+		//std::cout << "Unknown figure\n";
 		return 0;
 	}
 
@@ -374,7 +384,8 @@ bool Finder::find_round(unsigned int _err)
 	// Symmetrical edge must different
 	if (top_.first.second - left_.first.second < radius - 1 || right_.first.second - top_.first.second < radius - 1 || bottom_.first.second - left_.second.second < radius - 1 || right_.second.second - bottom_.second.second < radius - 1 || bottom_.first.first - left_.second.first < radius - 1 || left_.first.first - top_.first.first < radius - 1 || bottom_.second.first - right_.second.first < radius - 1 || right_.first.first - top_.second.first < radius - 1)
 	{
-		std::cout << "Edges is too close" << std::endl;
+		//std::cout << "Edges is too close" << std::endl;
+		//std::cout << "Unknown figure\n";
 		return 0;
 	}
 
@@ -389,7 +400,7 @@ bool Finder::find_round(unsigned int _err)
 	}
 	if (currentErr > _err)
 	{
-		std::cout << "More noise than expected" << std::endl;
+		//std::cout << "More noise than expected\n";
 		return 0;
 	}
 
@@ -398,27 +409,30 @@ bool Finder::find_round(unsigned int _err)
 	// Then compare Bresenham's drawing of circle with image
 	if (diameter & 1)
 	{
-		std::cout << "Diameter is odd" << std::endl;
+		//std::cout << "Diameter is odd" << std::endl;
 		if (check_Bresenham(centerX, centerY, radius))
 		{
-			std::cout << "Center in " << centerX << ',' << centerY << " and diameter " << diameter << std::endl;
+			//std::cout << "Center in " << centerX << ',' << centerY << " and diameter " << diameter << std::endl;
+			std::cout << "Round, diameter = " << diameter << ", (" << centerX << ',' << centerY << ")\n";
 			return 1;
 		}
 		else
 		{
+			//std::cout << "Unknown figure\n";
 			return 0;
 		}
 	}
 	else
 	{
 		++centerX;
-		std::cout << "Diameter is even" << std::endl;
+		//std::cout << "Diameter is even" << std::endl;
+
 		// Check 4 diagonals, 1 column & 1 line around the central round - valid check for rounds with diameters <= 10
 		// 4 points must not filled - valid check for rounds with diameters <= 10
 		if (image_[centerY - 3][centerX + 3] || image_[centerY - 3][centerX - 4] || image_[centerY + 4][centerX + 3] || image_[centerY + 4][centerX - 4])
 		{
-			std::cout << image_[centerY - 3][centerX + 3] << image_[centerY - 3][centerX - 4] << image_[centerY + 4][centerX + 3] << image_[centerY + 4][centerX - 4] << std::endl;
-			std::cout << "This is not a round" << std::endl;
+			//std::cout << "This is not a round" << std::endl;
+			//std::cout << "Unknown figure\n";
 			return 0;
 		}
 		int startColumn = left_.first.second;
@@ -477,25 +491,25 @@ bool Finder::find_round(unsigned int _err)
 			}
 		}
 
-
-
-
 		if (currentErr > _err)
 		{
-			std::cout << "More noise than expected" << std::endl;
+			//std::cout << "More noise than expected\n";
 			return 0;
 		}
 
 		if (check_Bresenham(centerX, centerY, radius))
 		{
-			std::cout << "Center in " << centerX << ',' << centerY << " and diameter " << diameter << std::endl;
+			//std::cout << "Center in " << centerX << ',' << centerY << " and diameter " << diameter << std::endl;
+			std::cout << "Round, diameter = " << diameter << ", (" << centerX << ',' << centerY << ")\n";
 			return 1;
 		}
 		else
 		{
+			//std::cout << "Unknown figure\n";
 			return 0;
 		}
 	}
 
+	//std::cout << "Unknown figure\n";
 	return 0;
 }
