@@ -1,5 +1,6 @@
 project(WartsilaTest LANGUAGES CXX)
 cmake_minimum_required(VERSION 3.0)
+
 add_executable(detector WartsilaTest/Finder.h WartsilaTest/Finder.cpp WartsilaTest/main.cpp)
 if(TARGET detector)
     message("The detector was defined!")
