@@ -41,13 +41,13 @@ bool Finder::find(FILE* _file, unsigned int _err)
 		for (int j = 0; j < width_; ++j)
 		{
 			image_[i][j] = readedString[i*width_ + j + 2*i] - '0';
-			std::cout << image_[i][j] << ' ';
+			//std::cout << image_[i][j] << ' ';
 			if (image_[i][j])
 			{
 				++area_;
 			}
 		}
-		std::cout << std::endl;
+		//std::cout << std::endl;
 	}
 
 	delete[] readedString;
