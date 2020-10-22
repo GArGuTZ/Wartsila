@@ -272,7 +272,7 @@ bool Finder::find_square(unsigned int _err)
 		//std::cout << "Square is filled inside" << std::endl;
 		//std::cout << "Square edge length is " << top_.second.second - top_.first.second + 1 << std::endl;
 		//std::cout << "Square top left point is (" << top_.first.first << ',' << top_.first.second << ')' << std::endl;
-		std::cout << "Square, edge length = " << top_.second.second - top_.first.second + 1 << ", (" << top_.first.first << ',' << top_.first.second << ")\n";
+		std::cout << "Square, edge length = " << top_.second.second - top_.first.second + 1 << ", " << top_.first.first << ',' << top_.first.second << '\n';
 		return 1;
 	}
 
@@ -390,14 +390,23 @@ bool Finder::find_round(unsigned int _err)
 	}
 
 	// Check one of the axis
-	int axis = (left_.first.first + left_.second.first) / 2;
+	int axisX = (left_.first.first + left_.second.first) / 2;
 	for (int j = left_.first.second + 1; j < right_.first.second; ++j)
 	{
-		if (!image_[axis][j])
+		if (!image_[axisX][j])
 		{
 			++currentErr;
 		}
 	}
+	int axisY = (top_.first.second + top_.second.second) / 2;
+	for (int i = top_.first.first + 1; i < bottom_.first.first; ++i)
+	{
+		if (!image_[i][axisY])
+		{
+			++currentErr;
+		}
+	}
+
 	if (currentErr > _err)
 	{
 		//std::cout << "More noise than expected\n";
@@ -413,7 +422,7 @@ bool Finder::find_round(unsigned int _err)
 		if (check_Bresenham(centerX, centerY, radius))
 		{
 			//std::cout << "Center in " << centerX << ',' << centerY << " and diameter " << diameter << std::endl;
-			std::cout << "Round, diameter = " << diameter << ", (" << centerX << ',' << centerY << ")\n";
+			std::cout << "Round, diameter = " << diameter << ", " << centerX << ',' << centerY << '\n';
 			return 1;
 		}
 		else
@@ -500,7 +509,7 @@ bool Finder::find_round(unsigned int _err)
 		if (check_Bresenham(centerX, centerY, radius))
 		{
 			//std::cout << "Center in " << centerX << ',' << centerY << " and diameter " << diameter << std::endl;
-			std::cout << "Round, diameter = " << diameter << ", (" << centerX << ',' << centerY << ")\n";
+			std::cout << "Round, diameter = " << diameter << ", " << centerX << ',' << centerY << '\n';
 			return 1;
 		}
 		else
