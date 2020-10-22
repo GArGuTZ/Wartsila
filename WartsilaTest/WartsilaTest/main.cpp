@@ -3,13 +3,19 @@
 #include <cstdlib>
 #include "Finder.h"
 
-#define ARG_COUNT 2
+#define MIN_ARG_COUNT 2
+#define MAX_ARG_COUNT 3
 
 int main(int argc, char* argv[])
 {
-	if (argc != ARG_COUNT)
+	if (argc < MIN_ARG_COUNT)
 	{
 		fprintf(stderr, "Too few arguments\n");
+		return EXIT_FAILURE;
+	}
+	if (argc > MAX_ARG_COUNT)
+	{
+		fprintf(stderr, "Too many arguments\n");
 		return EXIT_FAILURE;
 	}
 	
@@ -21,7 +27,19 @@ int main(int argc, char* argv[])
 	}
 
 	Finder firstFinder;
-	firstFinder.find(fileToRead);
+	if (argc == MIN_ARG_COUNT)
+	{
+		firstFinder.find(fileToRead);
+	}
+	else
+	{
+		int maxNoise = std::atoi(argv[2]);
+		if (maxNoise < 0)
+		{
+			maxNoise = 0;
+		}
+		firstFinder.find(fileToRead, maxNoise);
+	}
 
 	fclose(fileToRead);
 	return EXIT_SUCCESS;
